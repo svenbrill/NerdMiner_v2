@@ -27,6 +27,38 @@ void oledDisplay_AlternateRotation(void)
 {
 }
 
+void oledDisplay_CustomScreen(unsigned long mElapsed)
+{
+  mining_data data = getMiningData(mElapsed);
+
+  Serial.printf(">>> Completed %s share(s), %s Khashes, avg. hashrate %s KH/s\n",
+                data.completedShares.c_str(), data.totalKHashes.c_str(), data.currentHashRate.c_str());
+
+  display->clear();
+
+  // Current hashrate
+  display->setFont(ArialMT_Plain_24);
+  display->setTextAlignment(TEXT_ALIGN_CENTER);
+  display->drawString(display->getWidth() / 2, 4, (String)data.currentHashRate.c_str() + " KH/s");
+
+  // Valid Blocks
+  display->setFont(ArialMT_Plain_16);
+  display->setTextAlignment(TEXT_ALIGN_CENTER);
+  display->drawString(display->getWidth() / 2, 32, "Valid Blocks: " + (String)data.valids.c_str());
+
+  // Temprature
+  display->setFont(ArialMT_Plain_10);
+  display->setTextAlignment(TEXT_ALIGN_LEFT);
+  display->drawString(0, 52, "Temp: " + (String)data.temp.c_str() + "°C");
+
+  // Mining time
+  display->setFont(ArialMT_Plain_10);
+  display->setTextAlignment(TEXT_ALIGN_RIGHT);
+  display->drawString(display->width(), 52, "d" + (String)data.timeMining.c_str());
+
+  display->display();
+}
+
 void oledDisplay_MinerScreen(unsigned long mElapsed)
 {
   mining_data data = getMiningData(mElapsed);
@@ -193,6 +225,13 @@ void oledDisplay_LoadingScreen(void)
 
 void oledDisplay_SetupScreen(void)
 {
+  display->clear();
+
+  display->setFont(ArialMT_Plain_16);
+  display->setTextAlignment(TEXT_ALIGN_CENTER_BOTH);
+  display->drawString(display->getWidth() / 2, (display->getHeight() / 2), "Setup...");
+
+  display->display();
 }
 
 void oledDisplay_AnimateCurrentScreen(unsigned long frame)
@@ -203,7 +242,7 @@ void oledDisplay_DoLedStuff(unsigned long frame)
 {
 }
 
-CyclicScreenFunction oledDisplayCyclicScreens[] = {oledDisplay_MinerScreen, oledDisplay_ClockScreen, oledDisplay_GlobalHashScreen};
+CyclicScreenFunction oledDisplayCyclicScreens[] = {oledDisplay_CustomScreen, oledDisplay_MinerScreen, oledDisplay_ClockScreen, oledDisplay_GlobalHashScreen};
 
 DisplayDriver oledDisplayDriver = {
     oledDisplay_Init,
