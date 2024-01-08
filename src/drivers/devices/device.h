@@ -25,6 +25,8 @@
 #include "m5StampS3.h"
 #elif defined(ESP32RGB)
 #include "esp32RGB.h"
+#elif defined(HELTEC_WIFI_LORA_V3)
+#include "heltecWifiLora_32_V3.h"
 
 #else
 #error "No device defined"
