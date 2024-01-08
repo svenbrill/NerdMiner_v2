@@ -9,6 +9,7 @@
 #define HEIGHT 64
 
 SSD1306Wire *display;
+bool displayOff;
 
 void oledDisplay_Init(void)
 {
@@ -21,6 +22,16 @@ void oledDisplay_Init(void)
 void oledDisplay_AlternateScreenState(void)
 {
   Serial.println("Switching display state");
+
+  if (displayOff)
+  {
+    display->displayOn();
+  }
+  else
+  {
+    display->displayOff();
+  }
+  displayOff = !displayOff;
 }
 
 void oledDisplay_AlternateRotation(void)
