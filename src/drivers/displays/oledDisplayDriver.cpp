@@ -60,7 +60,7 @@ void oledDisplay_CustomScreen(unsigned long mElapsed)
   // Temprature
   display->setFont(ArialMT_Plain_10);
   display->setTextAlignment(TEXT_ALIGN_LEFT);
-  display->drawString(0, 52, "Temp: " + (String)data.temp.c_str() + "°C");
+  display->drawString(0, 52, (String)data.temp.c_str() + "°C");
 
   // Mining time
   display->setFont(ArialMT_Plain_10);
